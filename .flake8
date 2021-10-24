@@ -1,0 +1,13 @@
+[flake8]
+# same line length as Black
+max-line-length = 120
+extend-ignore =
+    # https://github.com/PyCQA/pycodestyle/issues/373
+    E203,
+    # conflicts with Black
+    E231,
+    # from https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/
+    E266,
+    F403,
+    # from https://github.com/psf/black/blob/master/docs/compatible_configs.md#formats-1
+    W503
