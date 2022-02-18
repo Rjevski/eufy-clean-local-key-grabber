@@ -14,9 +14,15 @@ TIMEZONE = "Europe/London"
 # from Eufy Home Android app
 TUYA_CLIENT_ID = "yx5v9uc3ef9wg3v9atje"
 
-# for other regions you may need to change this?
-# TODO: is this somehow returned by the Eufy API, and if so, can we set this automatically?
-TUYA_ENDPOINT = "https://a1.tuyaeu.com/api.json"
+# Tuya Endpoint based on Region
+def get_tuya_endpoint(region_code):
+    switcher = {
+        'EU': 'https://a1.tuyaeu.com/api.json',
+        'US': 'https://a1.tuyaus.com/api.json',
+        'AY': 'https://a1.tuyacn.com/api.json'
+    }
+
+    return switcher.get(region_code)
 
 
 # Eufy Home "TUYA_SMART_SECRET" Android app metadata value
