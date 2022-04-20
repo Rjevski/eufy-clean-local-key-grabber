@@ -1,5 +1,6 @@
 import hmac
 import json
+import math
 import random
 import string
 import time
@@ -266,7 +267,8 @@ class TuyaAPISession:
 
     def determine_password(self, username: str):
         new_uid = username
-        password_uid = new_uid.zfill(16)
+        padded_size = 16 * math.ceil(len(new_uid) / 16)
+        password_uid = new_uid.zfill(padded_size)
 
         encryptor = TUYA_PASSWORD_INNER_CIPHER.encryptor()
         encrypted_uid = encryptor.update(password_uid.encode("utf8"))
