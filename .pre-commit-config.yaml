@@ -23,14 +23,14 @@ repos:
       - id: isort
         types: [file, python]
   - repo: https://github.com/psf/black
-    rev: 19.10b0 # Replace by any tag/version: https://github.com/psf/black/tags
+    rev: 22.3.0 # Replace by any tag/version: https://github.com/psf/black/tags
     hooks:
       - id: black
         language_version: python3 # Should be a command that runs python3.6+
         types: [file, python]
         args: [-t, py38, -l, "119"]
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.3  # pick a git hash / tag to point to (https://gitlab.com/pycqa/flake8/-/tags)
+    rev: 3.9.2  # pick a git hash / tag to point to (https://gitlab.com/pycqa/flake8/-/tags)
     hooks:
       - id: flake8
         types: [file, python]
