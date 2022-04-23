@@ -14,9 +14,9 @@ TIMEZONE = "Europe/London"
 # from Eufy Home Android app
 TUYA_CLIENT_ID = "yx5v9uc3ef9wg3v9atje"
 
-# for other regions you may need to change this?
-# TODO: is this somehow returned by the Eufy API, and if so, can we set this automatically?
-TUYA_ENDPOINT = "https://a1.tuyaeu.com/api.json"
+# from testing it seems like any region is fine for initial logins
+# the login response then contains the proper URL which should be used for subsequent requests
+TUYA_INITIAL_BASE_URL = "https://a1.tuyaeu.com"
 
 
 # Eufy Home "TUYA_SMART_SECRET" Android app metadata value

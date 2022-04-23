@@ -19,7 +19,7 @@ from .constants import (
     PLATFORM,
     TIMEZONE,
     TUYA_CLIENT_ID,
-    TUYA_ENDPOINT,
+    TUYA_INITIAL_BASE_URL,
 )
 from .crypto import TUYA_PASSWORD_INNER_CIPHER, shuffled_md5, unpadded_rsa
 
@@ -92,8 +92,8 @@ class EufyHomeSession:
         self.email = email
         self.password = password
 
-    def url(self, url):
-        return urljoin(self.base_url, url)
+    def url(self, path):
+        return urljoin(self.base_url, path)
 
     def login(self, email, password):
         resp = self.session.post(
@@ -149,6 +149,11 @@ class TuyaAPISession:
 
         self.username = username
         self.country_code = country_code
+
+        self.base_url = TUYA_INITIAL_BASE_URL
+
+    def url(self, path):
+        return urljoin(self.base_url, path)
 
     @staticmethod
     def generate_new_device_id():
@@ -226,7 +231,12 @@ class TuyaAPISession:
         return hmac.HMAC(key=EUFY_HMAC_KEY, msg=message.encode("utf-8"), digestmod=sha256).hexdigest()
 
     def _request(
-        self, action: str, version="1.0", data: dict = None, query_params: dict = None, _requires_session=True,
+        self,
+        action: str,
+        version="1.0",
+        data: dict = None,
+        query_params: dict = None,
+        _requires_session=True,
     ):
         if not self.session_id and _requires_session:
             self.acquire_session()
@@ -246,8 +256,11 @@ class TuyaAPISession:
         encoded_post_data = self.encode_post_data(data)
 
         resp = self.session.post(
-            TUYA_ENDPOINT,
-            params={**query_params, "sign": self.get_signature(query_params, encoded_post_data),},
+            self.url("/api.json"),
+            params={
+                **query_params,
+                "sign": self.get_signature(query_params, encoded_post_data),
+            },
             # why do they send JSON as a single form-encoded value instead of just putting it directly in the body?
             # they spent more time implementing the stupid request signature system than actually designing a good API
             data={"postData": encoded_post_data} if encoded_post_data else None,
@@ -298,7 +311,9 @@ class TuyaAPISession:
         }
 
         session_response = self._request(
-            action="tuya.m.user.uid.password.login.reg", data=data, _requires_session=False,
+            action="tuya.m.user.uid.password.login.reg",
+            data=data,
+            _requires_session=False,
         )
 
         return session_response
@@ -306,9 +321,14 @@ class TuyaAPISession:
     def acquire_session(self):
         session_response = self.request_session(self.username, self.country_code)
         self.session_id = self.default_query_params["sid"] = session_response["sid"]
+        self.base_url = session_response["domain"]["mobileApiUrl"]
 
     def list_homes(self):
         return self._request(action="tuya.m.location.list", version="2.1")
 
     def list_devices(self, home_id: str):
-        return self._request(action="tuya.m.my.group.device.list", version="1.0", query_params={"gid": home_id},)
+        return self._request(
+            action="tuya.m.my.group.device.list",
+            version="1.0",
+            query_params={"gid": home_id},
+        )
