@@ -19,7 +19,7 @@ from .constants import (
     PLATFORM,
     TIMEZONE,
     TUYA_CLIENT_ID,
-    get_tuya_endpoint,
+    TUYA_ENDPOINT,
 )
 from .crypto import TUYA_PASSWORD_INNER_CIPHER, shuffled_md5, unpadded_rsa
 
@@ -108,9 +108,6 @@ class EufyHomeSession:
 
         resp.raise_for_status()
         data = resp.json()
-
-        global region_code
-        region_code = data["user_info"]["registered_region"]
 
         access_token = data["access_token"]
         user_id = data["user_info"]["id"]
@@ -249,7 +246,7 @@ class TuyaAPISession:
         encoded_post_data = self.encode_post_data(data)
 
         resp = self.session.post(
-            get_tuya_endpoint(region_code),
+            TUYA_ENDPOINT,
             params={**query_params, "sign": self.get_signature(query_params, encoded_post_data),},
             # why do they send JSON as a single form-encoded value instead of just putting it directly in the body?
             # they spent more time implementing the stupid request signature system than actually designing a good API
