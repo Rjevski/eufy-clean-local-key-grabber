@@ -13,8 +13,10 @@ python -m eufy_local_id_grabber "<EUFY ACCOUNT EMAIL>" "<EUFY ACCOUNT PASSWORD>"
 
 You will get the following output:
 
-> Home: <home ID>
-> Device: RoboVac, device ID <device ID>, local key <local key>
+```
+Home: <home ID>
+Device: RoboVac, device ID <device ID>, local key <local key>
+```
 
 It will list all the devices in all the "homes" (though I am actually not sure if you can have more than one home in Eufy) on your account.
 
@@ -23,3 +25,5 @@ It will list all the devices in all the "homes" (though I am actually not sure i
 * https://github.com/mitchellrj/eufy_robovac
 * https://github.com/nalajcie/tuya-sign-hacking
 * https://github.com/TuyaAPI/cloud
+
+And the other amazing people who've shown interest in this project and even contributed to it. ❤️
