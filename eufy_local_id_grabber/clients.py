@@ -269,6 +269,9 @@ class TuyaAPISession:
         resp.raise_for_status()
         data = resp.json()
 
+        if "result" not in data:
+            raise Exception(f"No 'result' key in the response - the entire response is {data}.")
+
         return data["result"]
 
     def request_token(self, username, country_code):
