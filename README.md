@@ -2,6 +2,10 @@
 
 This Python program allows you to obtain the device ID & local key for your Eufy devices without having to rely on running an old version of their Android app.
 
+## **UNMAINTAINED**
+
+I am not sure if this is still working (there's a massive security vulnerability with how the client authenticated to Tuya, so there's a chance they've now fixed it and as a result this tool will need updating); I do not currently use it anymore and have little time to maintain it. I'd be happy to appoint a maintainer if someone volunteers.
+
 ## Usage/TLDR:
 
 In a somewhat recent Python 3 (I ran Python 3.9 when developing this) virtualenv, run the following:
