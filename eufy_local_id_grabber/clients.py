@@ -330,8 +330,13 @@ class TuyaAPISession:
         return self._request(action="tuya.m.location.list", version="2.1")
 
     def list_devices(self, home_id: str):
-        return self._request(
+        ownDevices = self._request(
             action="tuya.m.my.group.device.list",
             version="1.0",
-            query_params={"gid": home_id},
-        )
+            query_params={"gid": home_id})
+
+        sharedDevices = self._request(
+            action="tuya.m.my.shared.device.list",
+            version="1.0")
+
+        return ownDevices + sharedDevices
